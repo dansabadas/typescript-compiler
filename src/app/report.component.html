@@ -1,0 +1,65 @@
+<mat-card class="create-report">
+    <mat-card-header class="create-report-header">
+        {{ title }}
+    </mat-card-header>
+    <mat-card-content class="create-report-form-content">
+        <mat-form-field>
+            <input
+                matInput
+                placeholder="Description"
+                required
+                [(ngModel)]="description"
+                #descript="ngModel">
+            <div *ngIf="descript.invalid && (descript.dirty || descript.touched)"
+                class="alert alert-danger">
+            </div>
+        </mat-form-field>
+
+        <mat-toolbar color="primary">
+            <span>Report items</span>
+            <span class="create-report-toolbar-spacer"></span>
+            <button mat-icon-button (click)="addItem()">
+                <mat-icon aria-label="Add new item">playlist_add</mat-icon>
+            </button>
+
+            <button mat-icon-button (click)="save()">
+                <mat-icon aria-label="Save report">save</mat-icon>
+            </button>
+        </mat-toolbar>
+
+        <mat-table #table [dataSource]="dataSource">
+
+            <ng-container matColumnDef="description">
+                <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
+                <mat-cell *matCellDef="let item"> {{item.description}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="amount">
+                <mat-header-cell *matHeaderCellDef> Amount </mat-header-cell>
+                <mat-cell *matCellDef="let item"> {{item.amount | currency}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="type">
+                <mat-header-cell *matHeaderCellDef> Type </mat-header-cell>
+                <mat-cell *matCellDef="let item"> {{item.type}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="date">
+                <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+                <mat-cell *matCellDef="let item"> {{item.date | date}} </mat-cell>
+            </ng-container>
+        
+            <ng-container matColumnDef="hasReceipt">
+                <mat-header-cell *matHeaderCellDef> Has receipt </mat-header-cell>
+                <mat-cell *matCellDef="let item">
+                    <mat-icon *ngIf="item.hasReceipt">check</mat-icon>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+    </mat-card-content>
+</mat-card>
+
+<button mat-raised-button color="warn" (click)="cancel()">Cancel</button>

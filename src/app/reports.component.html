@@ -1,0 +1,53 @@
+<a mat-raised-button routerLink="/reports/create">New report</a>
+
+<h1 class="mat-h1">Reports</h1>
+
+<mat-table #table [dataSource]="reports" id="reports-list">
+    <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef> Id </mat-header-cell>
+        <mat-cell *matCellDef="let report">
+                <a [routerLink]="['/reports', report.id]">{{report.id}}</a>
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="description">
+        <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
+        <mat-cell *matCellDef="let report">
+            <a [routerLink]="['/reports', report.id]">{{report.description}}</a>
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="date">
+        <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+        <mat-cell *matCellDef="let report"> {{report.date | date}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="amount">
+        <mat-header-cell *matHeaderCellDef> Amount </mat-header-cell>
+        <mat-cell *matCellDef="let report"> {{report.amount | currency}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="approved">
+        <mat-header-cell *matHeaderCellDef> Approved </mat-header-cell>
+        <mat-cell *matCellDef="let report">
+            <mat-icon *ngIf="report.approved" id="report${{report.id}}">check</mat-icon>
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let report">
+            <div *ngIf="isAdmin | async">
+                <button mat-icon-button color="primary" (click)="approve(report)">
+                    <mat-icon>check_circle</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="reject(report)">
+                    <mat-icon>highlight_off</mat-icon>
+                </button>
+            </div>
+        </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
